@@ -1,0 +1,20 @@
+# --- indispensables
+fastapi
+uvicorn[standard]
+python-multipart      # televersement de fichiers
+psutil                # processus et connexions reseau
+numpy
+scikit-learn          # modele Cubernoyau (RandomForest), Isolation Forest, hachage des caracteristiques
+joblib
+pefile                # lecture des executables Windows (PE) : analyse profonde et caracteristiques EMBER
+
+# --- modele EMBER (fichiers Windows) : entrainement et utilisation
+lightgbm
+
+# --- facultatif
+# pyzipper            # ingestion d'archives chiffrees en AES (theZoo)
+# lief==0.14.1        # uniquement pour tools/validate_ember_features.py (Python <= 3.12)
+
+# --- tests
+pytest
+httpx

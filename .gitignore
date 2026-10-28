@@ -1,0 +1,22 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+data/*.db
+data/runtime/*
+data/reports/*
+!data/runtime/README.md
+!data/reports/README.md
+# jeux volumineux : a placer a la main (voir data/datasets/*/README.md)
+data/datasets/bodmas/*.npz
+data/datasets/bodmas/*.csv
+data/datasets/sorel20m/meta.db
+data/datasets/sorel20m/*.json
+data/datasets/sorel20m/binaries/
+data/datasets/thezoo/repo/
+data/datasets/custom/malware/*
+data/datasets/custom/benign/*
+!data/datasets/custom/*/README.md
+data/models/ember/*
+!data/models/ember/.gitkeep
+data/models/*.joblib

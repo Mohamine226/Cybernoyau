@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mougle Protect — Cybersécurité</title>
+  <meta name="theme-color" content="#f2f5f8">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 4l9 7M5 10v10h5v-6h4v6h5V10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 1 1 12 0v6l1.5 2h-15zM10 21h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-net" viewBox="0 0 24 24"><path d="M4 9a12 12 0 0 1 16 0M7 12.5a8 8 0 0 1 10 0M10 16a4 4 0 0 1 4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="19" r="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-data" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M7 8h10v3a5 5 0 0 1-10 0zM12 16v5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 7v5l3.5 2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 6 8v10c0 9 6 16 14 19 8-3 14-10 14-19V8z" fill="#14607f"/><path d="m13 20 5 5 9-10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Mougle Protect</b><small>Protection de votre ordinateur</small></div></div>
+    <nav id="nav">
+      <p class="nav-title">Surveillance</p>
+      <button data-view="dashboard" class="active"><i><svg><use href="#i-home"/></svg></i><span>Vue d'ensemble</span></button>
+      <button data-view="alerts"><i><svg><use href="#i-bell"/></svg></i><span>Alertes</span> <em id="nav-alert-count" class="count" hidden>0</em></button>
+      <button data-view="processes"><i><svg><use href="#i-cpu"/></svg></i><span>Programmes en cours</span></button>
+      <button data-view="network"><i><svg><use href="#i-net"/></svg></i><span>Réseau</span></button>
+      <p class="nav-title">Analyse</p>
+      <button data-view="scan"><i><svg><use href="#i-scan"/></svg></i><span>Analyser</span></button>
+      <p class="nav-title">Connaissances</p>
+      <button data-view="training"><i><svg><use href="#i-data"/></svg></i><span>Données et entraînement</span></button>
+      <button data-view="connections"><i><svg><use href="#i-plug"/></svg></i><span>Services en ligne</span></button>
+      <p class="nav-title">Suivi</p>
+      <button data-view="history"><i><svg><use href="#i-clock"/></svg></i><span>Historique</span></button>
+
+    </nav>
+    <div class="monitor">
+      <span id="monitor-pill" class="pill">…</span>
+      <button id="btn-monitor" class="btn small">…</button>
+    </div>
+  </aside>
+  <main>
+    <header class="page-head"><h1 id="page-title">Vue d'ensemble</h1><p id="page-sub" class="muted"></p></header>
+    <div id="toast" class="toast" hidden></div>
+
+    <section id="view-dashboard" class="view">
+      <div id="status-hero" class="status-hero">
+        <div>
+          <h2 id="status-title">Vérification en cours…</h2>
+          <p id="status-text">Mougle Protect regarde ce qui se passe sur cet ordinateur.</p>
+        </div>
+        <div class="row" style="margin:0">
+          <button id="btn-run-once" class="btn">Vérifier maintenant</button>
+          <button id="btn-report" class="btn ghost">Exporter le rapport</button>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><span id="stat-open" class="num">0</span><span>alertes ouvertes</span></div>
+        <div class="stat"><span id="stat-high" class="num">0</span><span>à risque élevé</span></div>
+        <div class="stat"><span id="stat-suspect" class="num">0</span><span>à vérifier</span></div>
+        <div class="stat"><span id="stat-scans" class="num">0</span><span>analyses faites</span></div>
+        <div class="stat"><span id="stat-cycles" class="num">0</span><span>vérifications automatiques</span></div>
+      </div>
+      <div class="grid2">
+        <div class="panel">
+          <h2>Dernières alertes</h2>
+          <div id="dash-alerts" class="list"></div>
+        </div>
+        <div class="panel">
+          <h2>Surveillance</h2>
+          <dl id="dash-monitor" class="kv"></dl>
+          <h3>Activité des fichiers</h3>
+          <div id="dash-activity" class="muted">—</div>
+        </div>
+      </div>
+      <p class="notice">Mougle Protect observe et recommande : il ne supprime, ne bloque et ne modifie rien automatiquement. « Aucun signe » ne veut pas dire « sûr » : gardez un antivirus.</p>
+    </section>
+
+    <section id="view-alerts" class="view" hidden>
+      <div class="panel">
+        <div class="row">
+          <label>Niveau
+            <select id="alert-level">
+              <option value="">Tous</option>
+              <option value="RISQUE_ELEVE">Risque élevé</option>
+              <option value="SUSPECT">Suspect</option>
+            </select>
+          </label>
+          <label class="check"><input type="checkbox" id="alert-show-ack"> Afficher les alertes acquittées</label>
+        </div>
+        <div id="alerts-list" class="list"></div>
+      </div>
+    </section>
+
+    <section id="view-processes" class="view" hidden>
+      <div class="panel">
+        <div class="row">
+          <label class="check"><input type="checkbox" id="proc-flagged"> Uniquement les processus signalés</label>
+          <span id="proc-count" class="muted"></span>
+        </div>
+        <div class="table-wrap"><table id="proc-table">
+          <thead><tr><th>PID</th><th>Nom</th><th>Parent</th><th>CPU %</th><th>Mémoire</th><th>Anomalie</th><th>Risque</th><th>Observations</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section id="view-network" class="view" hidden>
+      <div class="panel">
+        <h2>Constats par processus</h2>
+        <div id="net-findings" class="list"></div>
+        <h2>Connexions externes actives</h2>
+        <div class="table-wrap"><table id="net-table">
+          <thead><tr><th>PID</th><th>Processus</th><th>Destination</th><th>Port</th><th>État</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+        <p id="net-note" class="muted"></p>
+      </div>
+    </section>
+
+    <section id="view-scan" class="view" hidden>
+      <div class="tabs" id="scan-tabs" role="tablist">
+        <button data-tab="links" class="active" role="tab">Liens</button>
+        <button data-tab="file" role="tab">Fichier / APK</button>
+        <button data-tab="path" role="tab">Chemin local</button>
+        <button data-tab="running" role="tab">Applications actives</button>
+      </div>
+      <div class="panel tab-panels">
+        <div class="tab-panel" data-tab="links">
+          <h2>Analyser des liens</h2>
+          <p class="muted">Un lien par ligne. Les pages ne sont jamais ouvertes.</p>
+          <textarea id="link-input" rows="6" placeholder="https://exemple.com/..."></textarea>
+          <button id="btn-scan-links" class="btn">Analyser les liens</button>
+        </div>
+        <div class="tab-panel" data-tab="file" hidden>
+          <h2>Analyser un fichier ou une application</h2>
+          <p class="muted">Tout type de fichier, toute taille : analyse sans exécution (hachage et entropie sur la totalité du fichier), puis suppression du serveur. Les APK Android sont pris en charge.</p>
+          <input type="file" id="file-input">
+          <div class="row">
+            <button id="btn-scan-file" class="btn">Analyser comme fichier</button>
+            <button id="btn-scan-app" class="btn">Analyser comme application</button>
+          </div>
+        </div>
+        <div class="tab-panel" data-tab="path" hidden>
+          <h2>Analyser un chemin local</h2>
+          <p class="muted">Fichier ou dossier de l'ordinateur qui héberge Mougle Protect.</p>
+          <input type="text" id="path-input" placeholder="C:\Users\...\Downloads">
+          <div class="row">
+            <select id="path-kind"><option value="file">Fichiers</option><option value="application">Applications</option></select>
+            <label class="check"><input type="checkbox" id="path-recursive"> Sous-dossiers</label>
+            <button id="btn-scan-path" class="btn">Analyser</button>
+          </div>
+        </div>
+        <div class="tab-panel" data-tab="running" hidden>
+          <h2>Applications en cours</h2>
+          <p class="muted">Analyse statique des exécutables des processus actifs.</p>
+          <button id="btn-scan-running" class="btn">Analyser les applications actives</button>
+        </div>
+      </div>
+      <div class="results-head"><h2>Résultats</h2><button id="results-clear" class="btn small ghost" type="button">Effacer</button></div>
+      <div id="scan-results" class="results"><p class="empty">Aucune analyse lancée. Choisissez un onglet ci-dessus.</p></div>
+    </section>
+
+    <section id="view-training" class="view" hidden>
+      <div class="tabs" id="train-tabs" role="tablist">
+        <button data-tab="ember" class="active" role="tab">Modèle pour Windows (EMBER)</button>
+        <button data-tab="datasets" role="tab">Jeux de données</button>
+        <button data-tab="intel" role="tab">Menaces connues</button>
+        <button data-tab="cubernoyau" role="tab">Modèle tout fichier (Cubernoyau)</button>
+      </div>
+
+      <div class="tab-panel" data-tab="ember">
+        <div class="panel">
+          <h2>Modèle EMBER pour les programmes Windows</h2>
+          <p class="muted">Un modèle appris sur des dizaines de milliers de programmes sains et malveillants. Il note chaque programme Windows (.exe, .dll) analysé. Les seuils d'alerte viennent de mesures faites sur des fichiers plus récents que ceux de l'entraînement.</p>
+          <dl id="em-status" class="kv"></dl>
+          <div class="row">
+            <select id="em-profile"><option value="rapide">Entraînement rapide</option><option value="standard">Entraînement complet (SOREL)</option></select>
+            <button id="btn-em-train" class="btn">Entraîner le modèle</button>
+            <label class="check"><input type="checkbox" id="em-auto"> Réentraîner automatiquement avec mes retours</label>
+          </div>
+          <div id="em-job" class="job"></div>
+        </div>
+        <div class="panel">
+          <h2>Modèles enregistrés</h2>
+          <div class="table-wrap"><table id="em-models">
+            <thead><tr><th>Date</th><th>Fichiers</th><th>Précision (AUC)</th><th>Détection à 0,1 % d'erreur</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-tab="datasets" hidden>
+        <div class="panel">
+          <h2>Jeux de données</h2>
+          <p class="muted">Chaque jeu a son dossier dans <code>data/datasets/</code>, avec un fichier README qui explique quoi y mettre.</p>
+          <div id="ds-list"></div>
+          <div id="ds-job" class="job"></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-tab="intel" hidden>
+        <div class="panel">
+          <h2>Menaces connues, consultables hors ligne</h2>
+          <dl id="intel-counts" class="kv"></dl>
+          <div class="row"><button id="btn-intel-sync" class="btn ghost">Relire les listes du dossier data/threat_intel</button></div>
+        </div>
+        <div class="panel">
+          <h2>Ajouter des empreintes malveillantes</h2>
+          <p class="muted">Collez ou importez des empreintes SHA-256 (TXT ou CSV, par exemple un export MalwareBazaar ou URLhaus). Tout fichier correspondant sera signalé à risque élevé.</p>
+          <textarea id="hash-text" rows="3" placeholder="une empreinte SHA-256 par ligne…"></textarea>
+          <div class="row"><input type="file" id="hash-file"><button id="btn-hashes" class="btn">Importer les empreintes</button></div>
+        </div>
+        <div class="panel">
+          <h2>Ajouter des liens malveillants</h2>
+          <p class="muted">Collez une liste de liens (URLhaus, PhishTank…). Tout lien ou site correspondant sera signalé.</p>
+          <textarea id="url-text" rows="3" placeholder="un lien par ligne…"></textarea>
+          <div class="row">
+            <select id="url-kind"><option value="malware">Diffuse des malwares</option><option value="phishing">Hameçonnage</option></select>
+            <input type="file" id="url-file"><button id="btn-urls" class="btn">Importer les liens</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-tab="cubernoyau" hidden>
+        <div class="grid2">
+          <div class="panel">
+            <h2>Modèle Cubernoyau</h2>
+            <p class="muted">Fonctionne sur tous les types de fichiers. Il apprend de vos dossiers et de vos retours « malveillant / sûr ».</p>
+            <dl id="tr-model" class="kv"></dl>
+            <div class="row">
+              <button id="btn-train" class="btn">Entraîner maintenant</button>
+              <label class="check"><input type="checkbox" id="tr-auto"> Entraînement automatique</label>
+            </div>
+            <div id="tr-job" class="job"></div>
+          </div>
+          <div class="panel">
+            <h2>Données conservées</h2>
+            <dl id="tr-data" class="kv"></dl>
+            <div class="row"><button id="btn-export" class="btn ghost small" type="button">Exporter le jeu (CSV)</button></div>
+            <p class="notice">Seules des valeurs numériques sont conservées, jamais les fichiers.</p>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Ajouter un dossier de fichiers étiquetés</h2>
+          <p class="muted">Un dossier qui ne contient que des fichiers malveillants, ou que des fichiers sains. Ils sont analysés sans être exécutés.</p>
+          <input type="text" id="ingest-path" placeholder="C:\\Echantillons\\malveillants">
+          <div class="row">
+            <select id="ingest-label"><option value="malware">Malveillants</option><option value="benign">Sains</option></select>
+            <label class="check"><input type="checkbox" id="ingest-recursive" checked> Sous-dossiers</label>
+            <button id="btn-ingest" class="btn">Extraire et ajouter</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Importer un jeu de caractéristiques (CSV)</h2>
+          <p class="muted">Un jeu exporté depuis un autre poste Mougle Protect : colonnes sha256, label, puis les caractéristiques.</p>
+          <div class="row"><input type="file" id="csv-file" accept=".csv"><button id="btn-import-csv" class="btn">Importer le CSV</button></div>
+        </div>
+        <div class="panel">
+          <h2>Modèles Cubernoyau enregistrés</h2>
+          <div class="table-wrap"><table id="tr-models">
+            <thead><tr><th>#</th><th>Date</th><th>Échantillons</th><th>F1</th><th>Rappel</th><th>Précision</th><th>État</th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-connections" class="view" hidden>
+      <div class="panel">
+        <label class="switch"><input type="checkbox" id="on-master"> Autoriser les services en ligne</label>
+        <p class="muted" style="margin-top:8px">Quand c'est activé, Mougle Protect peut demander à des bases de menaces publiques si un fichier ou un lien est connu. Il leur envoie seulement l'<b>empreinte SHA-256</b> du fichier ou le <b>lien</b> examiné — jamais le contenu d'un fichier. Désactivé par défaut : tout le reste fonctionne sans internet.</p>
+      </div>
+      <div class="panel">
+        <h2>Services</h2>
+        <div id="on-providers"></div>
+        <div class="row"><button id="btn-on-save" class="btn">Enregistrer</button></div>
+      </div>
+      <div class="panel">
+        <h2>Vérifier un lien ou une empreinte à la main</h2>
+        <input type="text" id="on-check-value" placeholder="https://…  ou  empreinte SHA-256 (64 caractères)">
+        <div class="row"><button id="btn-on-check" class="btn ghost">Interroger les services activés</button></div>
+        <div id="on-check-results"></div>
+      </div>
+    </section>
+
+    <section id="view-history" class="view" hidden>
+      <div class="panel">
+        <div id="history-list" class="list"></div>
+      </div>
+      <div id="history-detail" class="results"></div>
+    </section>
+  </main>
+  <aside id="console" class="console" aria-label="Console">
+    <div class="console-head">
+      <b>Console</b>
+      <span class="spacer"></span>
+      <button id="console-clear" class="btn small ghost" type="button">Effacer</button>
+      <button id="console-close" class="btn small ghost" type="button" aria-label="Fermer la console">Fermer</button>
+    </div>
+    <div id="console-log" class="console-log" role="log" aria-live="polite"></div>
+  </aside>
+</div>
+<button id="console-toggle" class="fab" type="button">Console</button>
+<script src="/static/app.js"></script>
+</body>
+</html>
